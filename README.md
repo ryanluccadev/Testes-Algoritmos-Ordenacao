@@ -29,7 +29,7 @@ O programa apresenta:
 
 ## 🛠️ Tecnologias
 
-**C** • **GCC** • **VS Code**
+**C** • **GCC** • **VS Code** • **Git**
 
 ## 🎯 Objetivo
 

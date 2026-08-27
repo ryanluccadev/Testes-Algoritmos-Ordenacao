@@ -6,9 +6,12 @@
 
 #include <stdio.h>
 
-// Função do Bubble Sort (ordenação por bolha)
+// ============================================================
+// BUBBLE SORT - ORDENAÇÃO POR BOLHA
+// ============================================================
+
 void bubbleSort(int vetor[], int tamanho) {
-    int i, j, temp; // Variáveis usadas na ordenação
+    int i, j, temp;
 
     // Percorre o vetor várias vezes
     for (i = 0; i < tamanho - 1; i++) {
@@ -19,7 +22,7 @@ void bubbleSort(int vetor[], int tamanho) {
             // Verifica se o valor atual é maior que o próximo
             if (vetor[j] > vetor[j + 1]) {
 
-                // Troca os dois valores de posição
+                // Troca os dois valores
                 temp = vetor[j];
                 vetor[j] = vetor[j + 1];
                 vetor[j + 1] = temp;
@@ -28,9 +31,13 @@ void bubbleSort(int vetor[], int tamanho) {
     }
 }
 
-// Função do Insertion Sort (ordenação por inserção)
+
+// ============================================================
+// INSERTION SORT - ORDENAÇÃO POR INSERÇÃO
+// ============================================================
+
 void insertionSort(int vetor[], int tamanho) {
-    int i, j, chave; // Variáveis usadas na ordenação
+    int i, j, chave;
 
     // Começa pela segunda posição do vetor
     for (i = 1; i < tamanho; i++) {
@@ -56,9 +63,13 @@ void insertionSort(int vetor[], int tamanho) {
     }
 }
 
-// Função do Selection Sort (ordenação por seleção)
+
+// ============================================================
+// SELECTION SORT - ORDENAÇÃO POR SELEÇÃO
+// ============================================================
+
 void selectionSort(int vetor[], int tamanho) {
-    int i, j, menor, temp; // Variáveis usadas na ordenação
+    int i, j, menor, temp;
 
     // Percorre o vetor
     for (i = 0; i < tamanho - 1; i++) {
@@ -82,41 +93,235 @@ void selectionSort(int vetor[], int tamanho) {
     }
 }
 
+
+// ============================================================
+// MERGE SORT - ORDENAÇÃO POR MESCLAGEM
+// ============================================================
+
+// Função responsável por intercalar duas partes ordenadas
+void intercalar(int vetor[], int esquerda, int meio, int direita) {
+
+    int i, j, k;
+
+    // Calcula o tamanho das duas partes
+    int n1 = meio - esquerda + 1;
+    int n2 = direita - meio;
+
+    // Cria vetores temporários
+    int V_Esquerda[n1];
+    int V_Direita[n2];
+
+    // Copia a primeira metade
+    for (i = 0; i < n1; i++) {
+        V_Esquerda[i] = vetor[esquerda + i];
+    }
+
+    // Copia a segunda metade
+    for (j = 0; j < n2; j++) {
+        V_Direita[j] = vetor[meio + 1 + j];
+    }
+
+    // Inicializa os índices
+    i = 0;
+    j = 0;
+    k = esquerda;
+
+    // Intercala as duas partes
+    while (i < n1 && j < n2) {
+
+        if (V_Esquerda[i] <= V_Direita[j]) {
+
+            vetor[k] = V_Esquerda[i];
+            i++;
+
+        } else {
+
+            vetor[k] = V_Direita[j];
+            j++;
+        }
+
+        k++;
+    }
+
+    // Copia os elementos restantes da esquerda
+    while (i < n1) {
+
+        vetor[k] = V_Esquerda[i];
+
+        i++;
+        k++;
+    }
+
+    // Copia os elementos restantes da direita
+    while (j < n2) {
+
+        vetor[k] = V_Direita[j];
+
+        j++;
+        k++;
+    }
+}
+
+
+// Função recursiva do Merge Sort
+void mergeSort(int vetor[], int esquerda, int direita) {
+
+    // Verifica se ainda é possível dividir o vetor
+    if (esquerda < direita) {
+
+        // Calcula o ponto médio
+        int meio = esquerda + (direita - esquerda) / 2;
+
+        // Ordena recursivamente a primeira metade
+        mergeSort(vetor, esquerda, meio);
+
+        // Ordena recursivamente a segunda metade
+        mergeSort(vetor, meio + 1, direita);
+
+        // Intercala as duas metades
+        intercalar(vetor, esquerda, meio, direita);
+    }
+}
+
+
+// ============================================================
+// QUICK SORT - ORDENAÇÃO RÁPIDA
+// ============================================================
+
+// Função responsável por particionar o vetor
+int particionar(int vetor[], int inicio, int fim) {
+
+    // Define o primeiro elemento como pivô
+    int pivot = vetor[inicio];
+
+    // i começa depois do pivô
+    int i = inicio + 1;
+
+    // j começa no final do vetor
+    int j = fim;
+
+    // Continua enquanto os índices não se cruzarem
+    while (i <= j) {
+
+        // Procura um elemento maior ou igual ao pivô
+        while (i <= fim && vetor[i] < pivot) {
+            i++;
+        }
+
+        // Procura um elemento menor que o pivô
+        while (j > inicio && vetor[j] >= pivot) {
+            j--;
+        }
+
+        // Se os índices não se cruzaram, troca os elementos
+        if (i < j) {
+
+            int temp = vetor[i];
+
+            vetor[i] = vetor[j];
+
+            vetor[j] = temp;
+        }
+    }
+
+    // Coloca o pivô na posição correta
+    int temp = vetor[inicio];
+
+    vetor[inicio] = vetor[j];
+
+    vetor[j] = temp;
+
+    // Retorna a posição final do pivô
+    return j;
+}
+
+
+// Função recursiva do Quick Sort
+void quickSort(int vetor[], int inicio, int fim) {
+
+    // Verifica se ainda existe mais de um elemento
+    if (inicio < fim) {
+
+        // Particiona o vetor e encontra a posição do pivô
+        int pivot = particionar(vetor, inicio, fim);
+
+        // Ordena a parte esquerda
+        quickSort(vetor, inicio, pivot - 1);
+
+        // Ordena a parte direita
+        quickSort(vetor, pivot + 1, fim);
+    }
+}
+
+
+// ============================================================
+// FUNÇÃO PARA MOSTRAR O VETOR
+// ============================================================
+
+void imprimirVetor(int vetor[], int tamanho) {
+
+    int i;
+
+    for (i = 0; i < tamanho; i++) {
+
+        printf("%d ", vetor[i]);
+    }
+
+    printf("\n");
+}
+
+
+// ============================================================
+// PROGRAMA PRINCIPAL
+// ============================================================
+
 int main() {
-    int tamanho; // Guarda o tamanho do vetor
-    int opcao;   // Guarda a opção escolhida no menu
 
-    // Exibe o título principal do programa
-    printf("\n=== LABORATÓRIO DE TESTES DE ALGORITMOS DE ORDENAÇÃO ===\n\n");
+    int tamanho;
+    int opcao;
 
-    // Pede para o usuário informar o tamanho
+    // Exibe o título principal
+    printf("\n=== LABORATORIO DE TESTES DE ALGORITMOS DE ORDENACAO ===\n\n");
+
+    // Pede o tamanho do vetor
     printf("Digite o tamanho do vetor: ");
     scanf("%d", &tamanho);
 
-    // Cria o vetor com o tamanho informado pelo usuário
+    // Cria o vetor com o tamanho informado
     int vetor[tamanho];
 
-    // Gera os números base do vetor
+    // Gera os números do vetor
     for (int i = 0; i < tamanho; i++) {
+
         vetor[i] = i;
     }
 
-    // Mostra o menu de seleção dos algoritmos
+    // Mostra o vetor antes da ordenação
+    printf("\nVetor original:\n");
+    imprimirVetor(vetor, tamanho);
+
+    // ========================================================
+    // MENU
+    // ========================================================
+
     printf("\nSelecao de algoritmos:\n\n");
+
     printf("1 - Bolha\n");
     printf("2 - Insercao\n");
     printf("3 - Selecao\n");
     printf("4 - Merge\n");
     printf("5 - Quick\n");
 
-    // Pede para o usuário escolher um algoritmo
+    // Pede a opção
     printf("\nEscolha um algoritmo: ");
     scanf("%d", &opcao);
 
-    // Verifica qual algoritmo foi escolhido
+    // ========================================================
+    // EXECUÇÃO DO ALGORITMO ESCOLHIDO
+    // ========================================================
+
     if (opcao == 1) {
 
-        // Chama a função Bubble Sort
         bubbleSort(vetor, tamanho);
 
         printf("\nBubble Sort executado.\n");
@@ -124,7 +329,6 @@ int main() {
 
     else if (opcao == 2) {
 
-        // Chama a função Insertion Sort
         insertionSort(vetor, tamanho);
 
         printf("\nInsertion Sort executado.\n");
@@ -132,28 +336,39 @@ int main() {
 
     else if (opcao == 3) {
 
-        // Chama a função Selection Sort
         selectionSort(vetor, tamanho);
 
         printf("\nSelection Sort executado.\n");
     }
 
+    else if (opcao == 4) {
+
+        mergeSort(vetor, 0, tamanho - 1);
+
+        printf("\nMerge Sort executado.\n");
+    }
+
+    else if (opcao == 5) {
+
+        quickSort(vetor, 0, tamanho - 1);
+
+        printf("\nQuick Sort executado.\n");
+    }
+
     else {
 
-        // Caso escolha Merge ou Quick
-        // Esses algoritmos ainda não foram implementados
-        printf("\nErro.\n");
+        printf("\nOpcao invalida.\n");
+
+        return 1;
     }
 
-    // Mostra o vetor depois da ordenação
-    printf("\nVetor ordenado: \n");
+    // ========================================================
+    // MOSTRA O VETOR ORDENADO
+    // ========================================================
 
-    // Percorre o vetor para mostrar seus valores
-    for (int i = 0; i < tamanho; i++) {
+    printf("\nVetor ordenado:\n");
 
-        // Mostra o valor da posição atual
-        printf("%d ", vetor[i]);
-    }
+    imprimirVetor(vetor, tamanho);
 
-    return 0; // Finaliza o programa
+    return 0;
 }
